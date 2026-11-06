@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lily Chen — Personal Website</title>
+  <meta name="description" content="Lily Chen — PAHCM UCL postgraduate 26/27. Personal website, CV, and portfolio.">
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --surface-color: #f8fafc;
+      --text-color: #0f172a;
+      --muted-text: #475569;
+      --primary-blue: #0056b3;
+      --primary-blue-hover: #003d82;
+      --accent-orange: #c2410c;
+      --accent-orange-bg: #fff7ed;
+      --border-color: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+    }
+
+    a {
+      color: var(--primary-blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    a:hover,
+    a:focus {
+      color: var(--primary-blue-hover);
+      outline: 2px solid var(--accent-orange);
+      outline-offset: 2px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Navigation */
+    nav {
+      background-color: var(--surface-color);
+      border-bottom: 2px solid var(--primary-blue);
+      padding: 0.75rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .nav-list a {
+      font-weight: 600;
+    }
+
+    /* Header */
+    header {
+      padding: 2.5rem 0 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: 2rem;
+      line-height: 1.2;
+      color: var(--text-color);
+    }
+
+    .headline {
+      margin: 0;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--primary-blue);
+    }
+
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--primary-blue);
+    }
+
+    /* Main Sections */
+    main {
+      padding: 1rem 0 3rem;
+    }
+
+    section {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    h2 {
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      color: var(--primary-blue);
+      border-left: 4px solid var(--accent-orange);
+      padding-left: 0.75rem;
+    }
+
+    h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.15rem;
+      color: var(--text-color);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.65rem;
+      background-color: var(--accent-orange-bg);
+      border: 1px solid var(--accent-orange);
+      color: var(--text-color);
+      font-weight: 600;
+      border-radius: 4px;
+      margin: 0.5rem 0;
+    }
+
+    /* CV Timeline */
+    .cv-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .timeline {
+      list-style: none;
+      margin: 0.5rem 0 0;
+      padding-left: 1rem;
+      border-left: 3px solid var(--primary-blue);
+    }
+
+    .timeline li {
+      margin-bottom: 0.5rem;
+      padding-left: 0.5rem;
+    }
+
+    .skill-list {
+      padding-left: 1.25rem;
+      margin: 0.5rem 0 0;
+    }
+
+    /* Portfolio Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .card {
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-top: 4px solid var(--primary-blue);
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+
+    .card-label {
+      display: inline-block;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--accent-orange);
+      margin-bottom: 0.35rem;
+    }
+
+    .chart-img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      margin: 0.75rem 0;
+    }
+
+    .caption {
+      font-size: 0.95rem;
+      color: var(--muted-text);
+      margin-top: 0.75rem;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--surface-color);
+      border-top: 2px solid var(--primary-blue);
+      padding: 1.5rem 0;
+      font-size: 0.95rem;
+      color: var(--muted-text);
+    }
+
+    footer p {
+      margin: 0.25rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <nav aria-label="Primary navigation">
+    <div class="container">
+      <ul class="nav-list">
+        <li><a href="#header">Top</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#cv">CV</a></li>
+        <li><a href="#portfolio">Data Visualisation Portfolio</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header id="header">
+    <div class="container header-grid">
+      <div>
+        <h1>Lily Chen</h1>
+        <p class="headline">PAHCM UCL postgraduate 26/27</p>
+      </div>
+      <div>
+        <img src="profile.jpg" alt="Portrait of Lily Chen" class="profile-img">
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="about" aria-labelledby="about-heading">
+      <h2 id="about-heading">About</h2>
+      <p>[PLACEHOLDER: Add your short bio here]</p>
+    </section>
+
+    <section id="cv" aria-labelledby="cv-heading">
+      <h2 id="cv-heading">CV</h2>
+
+      <div class="cv-group">
+        <h3>Education</h3>
+        <ul class="timeline">
+          <li><strong>UoB</strong> 23-26 [cite: 2]</li>
+          <li><strong>UCL</strong> 26-27 [cite: 2]</li>
+        </ul>
+      </div>
+
+      <div class="cv-group">
+        <h3>Experience</h3>
+        <ul class="timeline">
+          <li>Operation Management [cite: 2]</li>
+          <li>Event Management [cite: 2]</li>
+          <li>Consultancy Project [cite: 2]</li>
+        </ul>
+      </div>
+
+      <div class="cv-group">
+        <h3>Skills</h3>
+        <ul class="skill-list">
+          <li>Communication [cite: 2]</li>
+          <li>Problem-solving [cite: 2]</li>
+          <li>Critical thinking [cite: 2]</li>
+        </ul>
+      </div>
+
+      <p class="status-badge">CV download coming soon</p>
+    </section>
+
+    <section id="portfolio" aria-labelledby="portfolio-heading">
+      <h2 id="portfolio-heading">Data Visualisation Portfolio</h2>
+
+      <div class="card-grid">
+        <article class="card">
+          <span class="card-label">Project 1</span>
+          <h3>[PLACEHOLDER: Chart 1 Title]</h3>
+          <p><strong>Question / Summary:</strong> [PLACEHOLDER: One-line question the chart answers]</p>
+          <p><strong>Data source:</strong> [PLACEHOLDER: Data source]</p>
+          <img src="images/chart1.png" alt="[PLACEHOLDER: One sentence saying what the chart shows]" class="chart-img">
+          <p class="caption"><strong>What to notice:</strong> [PLACEHOLDER: One sentence]</p>
+          <p class="caption">[PLACEHOLDER: Credit line and "copy of a course chart" label]</p>
+        </article>
+
+        <article class="card">
+          <span class="card-label">Project 2</span>
+          <h3>[PLACEHOLDER: Project 2 Title]</h3>
+          <p><strong>Question / Summary:</strong> [PLACEHOLDER: One-line question or project summary]</p>
+          <p><strong>Data source:</strong> [PLACEHOLDER: Data source]</p>
+          <p class="status-badge">Chart coming soon</p>
+          <p class="caption"><strong>What to notice:</strong> [PLACEHOLDER: One sentence on what to notice]</p>
+          <p class="caption">[PLACEHOLDER: Credit line and "copy of a course chart" label]</p>
+        </article>
+
+        <article class="card">
+          <span class="card-label">Project 3</span>
+          <h3>[PLACEHOLDER: Project 3 Title]</h3>
+          <p><strong>Question / Summary:</strong> [PLACEHOLDER: One-line question or project summary]</p>
+          <p><strong>Data source:</strong> [PLACEHOLDER: Data source]</p>
+          <p class="status-badge">Chart coming soon</p>
+          <p class="caption"><strong>What to notice:</strong> [PLACEHOLDER: One sentence on what to notice]</p>
+          <p class="caption">[PLACEHOLDER: Credit line and "copy of a course chart" label]</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Contact</h2>
+      <p>
+        <strong>LinkedIn:</strong>
+        <a href="https://www.linkedin.com/in/qianli-c-9028502a2" target="_blank" rel="noopener noreferrer">www.linkedin.com/in/qianli-c-9028502a2</a> [cite: 1]
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Lily Chen</p>
+      <p>Built with the help of generative AI; content and decisions are my own.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
