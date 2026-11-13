@@ -323,14 +323,45 @@
     .timeline { border-left-color: var(--sage); }
     .meta { border-left-color: var(--orange); }
     .chart-frame { background: var(--surface); }
-    .cosy {
-      display: block;
-      width: min(360px, 100%);
-      height: auto;
-      margin: 0 auto -1px;
-    }
     .cosy-wrap { border-top: 1px solid var(--line); padding-top: 3rem; }
     footer { border-top: 0; text-align: center; }
+
+    /* Motion and interaction */
+    .cosy-stage { position: relative; width: min(360px, 100%); margin: 0 auto; }
+    .cosy { width: 100%; margin: 0; }
+    .hint { text-align: center; font-size: 1rem; color: var(--muted); margin: 0.75rem 0 0; }
+    .cat-btn {
+      position: absolute; right: 0; bottom: 0; width: 48%; height: 80%;
+      background: transparent; border: 0; border-radius: 12px; cursor: pointer;
+    }
+    .cat-btn:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+    .steam { transform-box: fill-box; transform-origin: bottom; animation: steam 3.2s ease-in-out infinite; }
+    .steam.s2 { animation-delay: 1.5s; }
+    @keyframes steam { 0% { opacity: 0; transform: translateY(6px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(-10px); } }
+    .cat .body { transform-box: fill-box; transform-origin: center bottom; animation: breathe 3.6s ease-in-out infinite; }
+    @keyframes breathe { 50% { transform: scaleY(1.07); } }
+    .zz { animation: float 3s ease-in-out infinite; }
+    .zz.z2 { animation-delay: 0.8s; }
+    @keyframes float { 0% { opacity: 0; transform: translate(0, 4px); } 50% { opacity: 1; } 100% { opacity: 0; transform: translate(6px, -8px); } }
+    .plant { transform-box: fill-box; transform-origin: 50% 100%; }
+    .cosy-stage:hover .plant { animation: sway 2.4s ease-in-out infinite; }
+    @keyframes sway { 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+    .eyes-open, .meow { opacity: 0; transition: opacity 0.2s; }
+    .awake .eyes-open, .awake .meow { opacity: 1; }
+    .awake .eyes-closed, .awake .zz { opacity: 0; animation: none; }
+    .tail { transform-box: fill-box; transform-origin: 0% 100%; }
+    .awake .tail { animation: wag 0.45s ease-in-out 4; }
+    @keyframes wag { 50% { transform: rotate(14deg); } }
+    .feature { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .feature:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(47, 52, 55, 0.08); }
+    .reveal { animation: rise 0.8s cubic-bezier(.2, .7, .2, 1) both; }
+    .reveal.d1 { animation-delay: 0.12s; }
+    .reveal.d2 { animation-delay: 0.24s; }
+    .reveal.d3 { animation-delay: 0.36s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -350,11 +381,11 @@
   <header class="hero" id="header">
     <div class="container hero-grid">
       <div>
-        <h1>Lily Chen</h1>
-        <p class="promise">Interested in how leadership and sustainable workplace design can unlock individual potential.</p>
-        <p class="meta">PAHCM UCL postgraduate 26/27</p>
+        <h1 class="reveal">Lily Chen</h1>
+        <p class="promise reveal d1">Interested in how leadership and sustainable workplace design can unlock individual potential.</p>
+        <p class="meta reveal d2">PAHCM UCL postgraduate 26/27</p>
       </div>
-      <div class="portrait-wrap">
+      <div class="portrait-wrap reveal d3">
         <img src="profile.jpg" alt="Portrait of Lily Chen" class="portrait">
         <svg class="sprig" viewBox="0 0 84 84" aria-hidden="true" focusable="false">
           <path d="M14 74 C 30 58, 42 40, 58 14" fill="none" stroke="#7b8a74" stroke-width="2.2" stroke-linecap="round"/>
@@ -388,11 +419,11 @@
           </div>
           <div class="stats" aria-label="Key figures, July 2026">
             <p>
-              <span class="stat-value up">+45%</span>
+              <span class="stat-value up" data-count="45">+45%</span>
               <span class="stat-label">Switzerland: dearest Big Mac compared with the US</span>
             </p>
             <p>
-              <span class="stat-value down">&minus;62%</span>
+              <span class="stat-value down" data-count="-62">&minus;62%</span>
               <span class="stat-label">Indonesia: cheapest Big Mac compared with the US</span>
             </p>
           </div>
@@ -455,29 +486,35 @@
 
   </main>
 
-  <div class="cosy-wrap" aria-hidden="true">
-    <svg class="cosy" viewBox="0 0 360 130" focusable="false">
-      <!-- plant -->
-      <ellipse cx="62" cy="62" rx="9" ry="24" transform="rotate(-28 62 62)" fill="#a8b5a0"/>
-      <ellipse cx="82" cy="58" rx="9" ry="26" transform="rotate(18 82 58)" fill="#c3ccbb"/>
-      <ellipse cx="72" cy="52" rx="8" ry="28" fill="#8f9d88"/>
-      <path d="M52 92 H92 L86 128 H58 Z" fill="#d6b9a3" stroke="#5a5f63" stroke-width="2" stroke-linejoin="round"/>
-      <!-- mug -->
-      <path d="M140 76 C 136 66, 146 62, 142 52" fill="none" stroke="#b7aea2" stroke-width="2" stroke-linecap="round"/>
-      <path d="M154 76 C 150 66, 160 62, 156 52" fill="none" stroke="#b7aea2" stroke-width="2" stroke-linecap="round"/>
-      <rect x="128" y="84" width="40" height="44" rx="6" fill="#b9c6cf" stroke="#5a5f63" stroke-width="2"/>
-      <path d="M168 94 C 182 94, 182 116, 168 116" fill="none" stroke="#5a5f63" stroke-width="2"/>
-      <!-- sleeping cat -->
-      <path d="M318 122 C 338 120, 340 102, 326 100" fill="none" stroke="#5a5f63" stroke-width="2" stroke-linecap="round"/>
-      <ellipse cx="268" cy="110" rx="52" ry="18" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2"/>
-      <path d="M212 96 L218 80 L226 92 M234 92 L242 80 L246 97" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2" stroke-linejoin="round"/>
-      <circle cx="230" cy="106" r="17" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2"/>
-      <path d="M220 106 Q 224 109 228 106 M234 106 Q 238 109 242 106" fill="none" stroke="#5a5f63" stroke-width="1.8" stroke-linecap="round"/>
-      <text x="252" y="80" font-family="Georgia, serif" font-size="14" fill="#8f9d88">z</text>
-      <text x="262" y="68" font-family="Georgia, serif" font-size="11" fill="#8f9d88">z</text>
-      <!-- table line -->
-      <line x1="20" y1="128.5" x2="340" y2="128.5" stroke="#5a5f63" stroke-width="2" stroke-linecap="round"/>
-    </svg>
+  <div class="cosy-wrap">
+    <div class="cosy-stage">
+      <svg class="cosy" viewBox="0 0 360 130" aria-hidden="true" focusable="false">
+        <g class="plant">
+          <ellipse cx="62" cy="62" rx="9" ry="24" transform="rotate(-28 62 62)" fill="#a8b5a0"/>
+          <ellipse cx="82" cy="58" rx="9" ry="26" transform="rotate(18 82 58)" fill="#c3ccbb"/>
+          <ellipse cx="72" cy="52" rx="8" ry="28" fill="#8f9d88"/>
+        </g>
+        <path d="M52 92 H92 L86 128 H58 Z" fill="#d6b9a3" stroke="#5a5f63" stroke-width="2" stroke-linejoin="round"/>
+        <path class="steam" d="M140 76 C 136 66, 146 62, 142 52" fill="none" stroke="#b7aea2" stroke-width="2" stroke-linecap="round"/>
+        <path class="steam s2" d="M154 76 C 150 66, 160 62, 156 52" fill="none" stroke="#b7aea2" stroke-width="2" stroke-linecap="round"/>
+        <rect x="128" y="84" width="40" height="44" rx="6" fill="#b9c6cf" stroke="#5a5f63" stroke-width="2"/>
+        <path d="M168 94 C 182 94, 182 116, 168 116" fill="none" stroke="#5a5f63" stroke-width="2"/>
+        <g class="cat">
+          <path class="tail" d="M318 122 C 338 120, 340 102, 326 100" fill="none" stroke="#5a5f63" stroke-width="2" stroke-linecap="round"/>
+          <ellipse class="body" cx="268" cy="110" rx="52" ry="18" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2"/>
+          <path d="M212 96 L218 80 L226 92 M234 92 L242 80 L246 97" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="230" cy="106" r="17" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2"/>
+          <path class="eyes-closed" d="M220 106 Q 224 109 228 106 M234 106 Q 238 109 242 106" fill="none" stroke="#5a5f63" stroke-width="1.8" stroke-linecap="round"/>
+          <g class="eyes-open" fill="#2f3437"><circle cx="224" cy="105" r="2.6"/><circle cx="238" cy="105" r="2.6"/></g>
+          <text class="zz" x="252" y="80" font-family="Georgia, serif" font-size="14" fill="#8f9d88">z</text>
+          <text class="zz z2" x="262" y="68" font-family="Georgia, serif" font-size="11" fill="#8f9d88">z</text>
+          <text class="meow" x="196" y="74" font-family="Georgia, serif" font-size="15" fill="#96583a">meow!</text>
+        </g>
+        <line x1="20" y1="128.5" x2="340" y2="128.5" stroke="#5a5f63" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <button class="cat-btn" type="button" aria-label="Wake up the sleeping cat"></button>
+    </div>
+    <p class="hint">Tap the sleeping cat.</p>
   </div>
 
   <footer>
@@ -487,5 +524,41 @@
     </div>
   </footer>
 
+  <script>
+    (function () {
+      var stage = document.querySelector('.cosy-stage');
+      var btn = document.querySelector('.cat-btn');
+      var timer;
+      if (stage && btn) {
+        btn.addEventListener('click', function () {
+          stage.classList.add('awake');
+          btn.setAttribute('aria-label', 'The cat is awake and says meow');
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            stage.classList.remove('awake');
+            btn.setAttribute('aria-label', 'Wake up the sleeping cat');
+          }, 2600);
+        });
+      }
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          io.unobserve(entry.target);
+          var el = entry.target, end = Number(el.getAttribute('data-count'));
+          var sign = end < 0 ? '\u2212' : '+', size = Math.abs(end), start = null;
+          function step(ts) {
+            if (!start) start = ts;
+            var p = Math.min((ts - start) / 1100, 1);
+            el.textContent = sign + Math.round(size * (1 - Math.pow(1 - p, 3))) + '%';
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+      }, { threshold: 0.6 });
+      document.querySelectorAll('[data-count]').forEach(function (el) { io.observe(el); });
+    })();
+  </script>
 </body>
 </html>
