@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Mac index: which currencies look over- or undervalued? — Lily Chen</title>
+  <meta name="description" content="Lily Chen — Project 1: an interactive Big Mac index chart for July 2026.">
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --surface-color: #f8fafc;
+      --text-color: #0f172a;
+      --muted-text: #475569;
+      --primary-blue: #0056b3;
+      --primary-blue-hover: #003d82;
+      --accent-orange: #c2410c;
+      --accent-orange-bg: #fff7ed;
+      --border-color: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+    }
+
+    a {
+      color: var(--primary-blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    a:hover,
+    a:focus {
+      color: var(--primary-blue-hover);
+      outline: 2px solid var(--accent-orange);
+      outline-offset: 2px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Navigation */
+    nav {
+      background-color: var(--surface-color);
+      border-bottom: 2px solid var(--primary-blue);
+      padding: 0.75rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .nav-list a {
+      font-weight: 600;
+    }
+
+    /* Header */
+    header {
+      padding: 2.5rem 0 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: 2rem;
+      line-height: 1.2;
+      color: var(--text-color);
+    }
+
+    .headline {
+      margin: 0;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--primary-blue);
+    }
+
+    /* Main Sections */
+    main {
+      padding: 1rem 0 3rem;
+    }
+
+    section {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    h2 {
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      color: var(--primary-blue);
+      border-left: 4px solid var(--accent-orange);
+      padding-left: 0.75rem;
+    }
+
+    .chart-frame {
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-top: 4px solid var(--primary-blue);
+      border-radius: 6px;
+      padding: 0.5rem;
+    }
+
+    .credit {
+      font-size: 1rem;
+      color: var(--muted-text);
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--surface-color);
+      border-top: 2px solid var(--primary-blue);
+      padding: 1.5rem 0;
+      font-size: 1rem;
+      color: var(--muted-text);
+    }
+
+    footer p {
+      margin: 0.25rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <nav aria-label="Primary navigation">
+    <div class="container">
+      <ul class="nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#header">Top</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#cv">CV</a></li>
+        <li><a href="index.html#portfolio">Data Visualisation Portfolio</a></li>
+        <li><a href="project1.html" aria-current="page">Project 1</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header id="header">
+    <div class="container">
+      <h1>Big Mac index: which currencies look over- or undervalued?</h1>
+      <p class="headline">Project 1</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="question" aria-labelledby="question-heading">
+      <h2 id="question-heading">The question</h2>
+      <p>In July 2026, how much more or less did a Big Mac cost in each country than in the US, once converted at market exchange rates?</p>
+    </section>
+
+    <section id="chart" aria-labelledby="chart-heading">
+      <h2 id="chart-heading">The chart</h2>
+      <div class="chart-frame">
+        <iframe src="charts/chart1.html" height="500" title="Interactive Big Mac index chart: how far each country's Big Mac price is above or below the US price, with controls for date and comparison currency" style="width:100%;border:0"></iframe>
+      </div>
+      <p><a href="charts/chart1.html" target="_blank" rel="noopener noreferrer">Open the chart in a new tab</a></p>
+    </section>
+
+    <section id="finding" aria-labelledby="finding-heading">
+      <h2 id="finding-heading">What I found</h2>
+      <p>In July 2026, a Big Mac cost 45% more in Switzerland than in the US, but 62% less in Indonesia. 41 of the other 53 countries and areas had a cheaper Big Mac than the US once converted to dollars.</p>
+    </section>
+
+    <section id="data" aria-labelledby="data-heading">
+      <h2 id="data-heading">Data credit</h2>
+      <p class="credit">Data: The Economist, Big Mac index (MIT licence; notice in LICENCE_bigmac_TheEconomist.txt), <a href="https://github.com/TheEconomist/big-mac-data" target="_blank" rel="noopener noreferrer">github.com/TheEconomist/big-mac-data</a>.</p>
+      <p class="credit">A copy of the MSIN0167 course target chart, built as a class exercise with AI help. Target A is inspired by The Economist's Big Mac index and is not a chart by The Economist.</p>
+      <p><a href="index.html">Back to home page</a></p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Lily Chen</p>
+      <p>Built with the help of generative AI; content and decisions are my own.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
