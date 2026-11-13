@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network of Thrones: who matters, and by which measure? — Lily Chen</title>
+  <meta name="description" content="Lily Chen — Project 2: an interactive network of the characters in A Storm of Swords.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #f3f0eb;
+      --surface: #e8e4dd;
+      --ink: #2f3437;
+      --muted: #5a5f63;
+      --blue: #46627a;
+      --blue-dark: #2f4a60;
+      --orange: #96583a;
+      --sage: #8f9d88;
+      --sage-light: #dfe4d9;
+      --line: #d5cec3;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    a:hover { color: var(--blue-dark); }
+
+    a:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navigation */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(243, 240, 235, 0.96);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem 1.5rem;
+      padding: 0.9rem 1.5rem;
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1.5rem;
+    }
+
+    .nav-list a {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 5rem 0 4rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 9vw, 5.25rem);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      margin: 0 0 1.25rem;
+    }
+
+    .promise {
+      font-family: var(--serif);
+      font-size: clamp(1.35rem, 2.8vw, 1.75rem);
+      line-height: 1.35;
+      max-width: 28ch;
+      margin: 0 0 1.5rem;
+    }
+
+    .meta {
+      margin: 0;
+      padding-left: 0.85rem;
+      border-left: 4px solid var(--orange);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .portrait {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid #ffffff;
+      box-shadow: 0 0 0 3px var(--blue);
+    }
+
+    /* Sections */
+    .section {
+      padding: 4rem 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4.5vw, 2.6rem);
+      line-height: 1.1;
+      margin: 0 0 2rem;
+    }
+
+    /* Work */
+    .feature {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 2.5rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 2.25rem;
+    }
+
+    .tags {
+      list-style: none;
+      margin: 0 0 1.25rem;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tags li {
+      font-size: 1rem;
+      padding: 0.15rem 0.75rem;
+      border: 1px solid var(--blue);
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--ink);
+    }
+
+    .feature h3 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3.2vw, 2rem);
+      line-height: 1.2;
+      margin: 0 0 1rem;
+    }
+
+    .feature p {
+      margin: 0 0 1rem;
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-weight: 700;
+    }
+
+    .stats {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
+      padding-left: 2.5rem;
+      border-left: 1px solid var(--line);
+    }
+
+    .stat-value {
+      display: block;
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 4rem);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .stat-value.up { color: var(--blue); }
+    .stat-value.down { color: var(--orange); }
+
+    .stat-label {
+      display: block;
+      font-size: 1rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+    }
+
+    .credit {
+      font-size: 1rem;
+      color: var(--muted);
+      margin: 1.25rem 0 0;
+      max-width: 75ch;
+    }
+
+    .more {
+      margin: 1.5rem 0 0;
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    /* About */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 3rem;
+    }
+
+    .bio p {
+      font-size: 1.15rem;
+      margin: 0 0 1rem;
+      max-width: 60ch;
+    }
+
+    .cv h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--blue);
+      margin: 0 0 0.5rem;
+    }
+
+    .cv-group { margin-bottom: 1.75rem; }
+
+    .timeline {
+      list-style: none;
+      margin: 0;
+      padding: 0 0 0 1rem;
+      border-left: 3px solid var(--orange);
+    }
+
+    .timeline li { margin-bottom: 0.4rem; }
+
+    .status {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border: 1px solid var(--orange);
+      border-radius: 6px;
+      margin: 0;
+    }
+
+    /* Contact */
+    .contact-line {
+      font-family: var(--serif);
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      margin: 0;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 2rem 0;
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    footer p { margin: 0.25rem 0; }
+
+    @media (max-width: 760px) {
+      .hero { padding: 3rem 0 2.5rem; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .portrait { width: 150px; height: 150px; order: -1; }
+      .feature { grid-template-columns: 1fr; padding: 1.5rem; }
+      .stats { padding-left: 0; padding-top: 1.5rem; border-left: 0; border-top: 1px solid var(--line); }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    /* Project page */
+    .project-hero { padding: 4rem 0 2.5rem; }
+    .project-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.25rem, 6vw, 3.75rem);
+      line-height: 1.08;
+      margin: 0 0 1.25rem;
+      max-width: 20ch;
+    }
+    .question {
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 2.6vw, 1.5rem);
+      line-height: 1.4;
+      max-width: 40ch;
+      margin: 0;
+    }
+    .chart-frame {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.75rem;
+    }
+    .chart-frame iframe { display: block; border-radius: 8px; background: #ffffff; }
+    .finding-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .finding-grid p.lead { font-size: 1.15rem; max-width: 55ch; margin: 0; }
+    .finding-grid .stats { padding-left: 2.5rem; }
+    @media (max-width: 760px) {
+      .finding-grid { grid-template-columns: 1fr; }
+      .finding-grid .stats { padding-left: 0; }
+    }
+    /* Morandi details */
+    body { background: var(--bg); }
+    .site-nav { background: rgba(243, 240, 235, 0.96); }
+    .portrait-wrap { position: relative; }
+    .portrait { border-color: var(--bg); box-shadow: 0 0 0 3px var(--sage); }
+    .sprig { position: absolute; left: -26px; bottom: -6px; width: 84px; height: 84px; }
+    .tags li { background: var(--sage-light); border-color: var(--sage); }
+    .feature { background: var(--surface); border-color: var(--line); }
+    .status { border-color: var(--sage); background: var(--sage-light); }
+    .timeline { border-left-color: var(--sage); }
+    .meta { border-left-color: var(--orange); }
+    .chart-frame { background: var(--surface); }
+    .cosy-wrap { border-top: 1px solid var(--line); padding-top: 3rem; }
+    footer { border-top: 0; text-align: center; }
+
+    /* Motion and interaction */
+    .cosy-stage { position: relative; width: min(360px, 100%); margin: 0 auto; }
+    .cosy { width: 100%; margin: 0; }
+    .hint { text-align: center; font-size: 1rem; color: var(--muted); margin: 0.75rem 0 0; }
+    .cat-btn {
+      position: absolute; right: 0; bottom: 0; width: 48%; height: 80%;
+      background: transparent; border: 0; border-radius: 12px; cursor: pointer;
+    }
+    .cat-btn:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+    .steam { transform-box: fill-box; transform-origin: bottom; animation: steam 3.2s ease-in-out infinite; }
+    .steam.s2 { animation-delay: 1.5s; }
+    @keyframes steam { 0% { opacity: 0; transform: translateY(6px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(-10px); } }
+    .cat .body { transform-box: fill-box; transform-origin: center bottom; animation: breathe 3.6s ease-in-out infinite; }
+    @keyframes breathe { 50% { transform: scaleY(1.07); } }
+    .zz { animation: float 3s ease-in-out infinite; }
+    .zz.z2 { animation-delay: 0.8s; }
+    @keyframes float { 0% { opacity: 0; transform: translate(0, 4px); } 50% { opacity: 1; } 100% { opacity: 0; transform: translate(6px, -8px); } }
+    .plant { transform-box: fill-box; transform-origin: 50% 100%; }
+    .cosy-stage:hover .plant { animation: sway 2.4s ease-in-out infinite; }
+    @keyframes sway { 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+    .eyes-open, .meow { opacity: 0; transition: opacity 0.2s; }
+    .awake .eyes-open, .awake .meow { opacity: 1; }
+    .awake .eyes-closed, .awake .zz { opacity: 0; animation: none; }
+    .tail { transform-box: fill-box; transform-origin: 0% 100%; }
+    .awake .tail { animation: wag 0.45s ease-in-out 4; }
+    @keyframes wag { 50% { transform: rotate(14deg); } }
+    .feature { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .feature:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(47, 52, 55, 0.08); }
+    .reveal { animation: rise 0.8s cubic-bezier(.2, .7, .2, 1) both; }
+    .reveal.d1 { animation-delay: 0.12s; }
+    .reveal.d2 { animation-delay: 0.24s; }
+    .reveal.d3 { animation-delay: 0.36s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">Lily Chen</a>
+      <ul class="nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#work">Work</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="project-hero" id="header">
+    <div class="container">
+      <ul class="tags reveal" aria-label="Project details">
+        <li>Network analysis</li>
+        <li>Class project</li>
+        <li>November 2026</li>
+      </ul>
+      <h1 class="reveal d1">Network of Thrones: who matters, and by which measure?</h1>
+      <p class="question reveal d2">In <i>A Storm of Swords</i>, which characters matter most in the network, and does the answer change with the measure you use?</p>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="section" id="chart" aria-labelledby="chart-heading">
+      <div class="container">
+        <h2 id="chart-heading">The chart</h2>
+        <div class="chart-frame">
+          <iframe src="charts/network.html" height="1100" title="Interactive network of 107 characters in A Storm of Swords, with buttons for degree centrality, brokerage and eigenvector centrality, a top-8 bar chart and a minimum-links slider" style="width:100%;border:0"></iframe>
+        </div>
+        <p><a href="charts/network.html" target="_blank" rel="noopener noreferrer">Open the chart in a new tab</a> (it needs an internet connection)</p>
+      </div>
+    </section>
+
+    <section class="section" id="finding" aria-labelledby="finding-heading">
+      <div class="container">
+        <h2 id="finding-heading">What I found</h2>
+        <div class="finding-grid">
+          <div>
+            <p class="lead">Jon has the highest brokerage score (0.230): he sits on more of the shortest routes between other characters than anyone else. Yet he ranks only 15th on eigenvector centrality, so being the main bridge is not the same as being linked to the other most central characters.</p>
+            <p>Use the buttons to switch measure, and the slider under the network to keep only characters with at least a chosen number of links.</p>
+          </div>
+          <div class="stats" aria-label="Key figures for Jon">
+            <p>
+              <span class="stat-value up">0.230</span>
+              <span class="stat-label">Jon: the highest brokerage score of all 107 characters</span>
+            </p>
+            <p>
+              <span class="stat-value down">15th</span>
+              <span class="stat-label">Jon: his rank on eigenvector centrality</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="data" aria-labelledby="data-heading">
+      <div class="container">
+        <h2 id="data-heading">Data credit</h2>
+        <p class="credit">Data: Network of Thrones, Andrew Beveridge and Jie Shan (2016), A Storm of Swords. Source: <a href="https://github.com/mathbeveridge/asoiaf" target="_blank" rel="noopener noreferrer">github.com/mathbeveridge/asoiaf</a>. Data and this adapted visualisation: CC BY-NC-SA 4.0, <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">creativecommons.org/licenses/by-nc-sa/4.0/</a>. Changes: unweighted centralities calculated and network visualised; minimum-links filter added. Original edge weights unchanged.</p>
+        <p class="credit">A copy of the MSIN0167 Week 7 course target figure, built as a class exercise with AI help, plus my own extension (the minimum-links filter).</p>
+        <p class="credit">This data may be used for non-commercial purposes only.</p>
+        <p><a class="cta" href="index.html">Back to home page</a></p>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="cosy-wrap">
+    <div class="cosy-stage">
+      <svg class="cosy" viewBox="0 0 360 130" aria-hidden="true" focusable="false">
+        <g class="plant">
+          <ellipse cx="62" cy="62" rx="9" ry="24" transform="rotate(-28 62 62)" fill="#a8b5a0"/>
+          <ellipse cx="82" cy="58" rx="9" ry="26" transform="rotate(18 82 58)" fill="#c3ccbb"/>
+          <ellipse cx="72" cy="52" rx="8" ry="28" fill="#8f9d88"/>
+        </g>
+        <path d="M52 92 H92 L86 128 H58 Z" fill="#d6b9a3" stroke="#5a5f63" stroke-width="2" stroke-linejoin="round"/>
+        <path class="steam" d="M140 76 C 136 66, 146 62, 142 52" fill="none" stroke="#b7aea2" stroke-width="2" stroke-linecap="round"/>
+        <path class="steam s2" d="M154 76 C 150 66, 160 62, 156 52" fill="none" stroke="#b7aea2" stroke-width="2" stroke-linecap="round"/>
+        <rect x="128" y="84" width="40" height="44" rx="6" fill="#b9c6cf" stroke="#5a5f63" stroke-width="2"/>
+        <path d="M168 94 C 182 94, 182 116, 168 116" fill="none" stroke="#5a5f63" stroke-width="2"/>
+        <g class="cat">
+          <path class="tail" d="M318 122 C 338 120, 340 102, 326 100" fill="none" stroke="#5a5f63" stroke-width="2" stroke-linecap="round"/>
+          <ellipse class="body" cx="268" cy="110" rx="52" ry="18" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2"/>
+          <path d="M212 96 L218 80 L226 92 M234 92 L242 80 L246 97" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="230" cy="106" r="17" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2"/>
+          <path class="eyes-closed" d="M220 106 Q 224 109 228 106 M234 106 Q 238 109 242 106" fill="none" stroke="#5a5f63" stroke-width="1.8" stroke-linecap="round"/>
+          <g class="eyes-open" fill="#2f3437"><circle cx="224" cy="105" r="2.6"/><circle cx="238" cy="105" r="2.6"/></g>
+          <text class="zz" x="252" y="80" font-family="Georgia, serif" font-size="14" fill="#8f9d88">z</text>
+          <text class="zz z2" x="262" y="68" font-family="Georgia, serif" font-size="11" fill="#8f9d88">z</text>
+          <text class="meow" x="196" y="74" font-family="Georgia, serif" font-size="15" fill="#96583a">meow!</text>
+        </g>
+        <line x1="20" y1="128.5" x2="340" y2="128.5" stroke="#5a5f63" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <button class="cat-btn" type="button" aria-label="Wake up the sleeping cat"></button>
+    </div>
+    <p class="hint">Tap the sleeping cat.</p>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Lily Chen</p>
+      <p>Built with the help of generative AI; content and decisions are my own.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var stage = document.querySelector('.cosy-stage');
+      var btn = document.querySelector('.cat-btn');
+      var timer;
+      if (stage && btn) {
+        btn.addEventListener('click', function () {
+          stage.classList.add('awake');
+          btn.setAttribute('aria-label', 'The cat is awake and says meow');
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            stage.classList.remove('awake');
+            btn.setAttribute('aria-label', 'Wake up the sleeping cat');
+          }, 2600);
+        });
+      }
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          io.unobserve(entry.target);
+          var el = entry.target, end = Number(el.getAttribute('data-count'));
+          var sign = end < 0 ? '\u2212' : '+', size = Math.abs(end), start = null;
+          function step(ts) {
+            if (!start) start = ts;
+            var p = Math.min((ts - start) / 1100, 1);
+            el.textContent = sign + Math.round(size * (1 - Math.pow(1 - p, 3))) + '%';
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+      }, { threshold: 0.6 });
+      document.querySelectorAll('[data-count]').forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</body>
+</html>
