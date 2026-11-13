@@ -5,63 +5,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Big Mac index: which currencies look over- or undervalued? — Lily Chen</title>
   <meta name="description" content="Lily Chen — Project 1: an interactive Big Mac index chart for July 2026.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
   <style>
     :root {
-      --bg-color: #ffffff;
-      --surface-color: #f8fafc;
-      --text-color: #0f172a;
-      --muted-text: #475569;
-      --primary-blue: #0056b3;
-      --primary-blue-hover: #003d82;
-      --accent-orange: #c2410c;
-      --accent-orange-bg: #fff7ed;
-      --border-color: #cbd5e1;
+      --bg: #f3f0eb;
+      --surface: #e8e4dd;
+      --ink: #2f3437;
+      --muted: #5a5f63;
+      --blue: #46627a;
+      --blue-dark: #2f4a60;
+      --orange: #96583a;
+      --sage: #8f9d88;
+      --sage-light: #dfe4d9;
+      --line: #d5cec3;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
     }
 
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.6;
-      color: var(--text-color);
-      background-color: var(--bg-color);
+      font-family: var(--sans);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
     }
 
     a {
-      color: var(--primary-blue);
+      color: var(--blue);
       text-decoration: underline;
       text-underline-offset: 3px;
     }
 
-    a:hover,
-    a:focus {
-      color: var(--primary-blue-hover);
-      outline: 2px solid var(--accent-orange);
-      outline-offset: 2px;
+    a:hover { color: var(--blue-dark); }
+
+    a:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 3px;
+      border-radius: 2px;
     }
 
     .container {
-      max-width: 860px;
+      max-width: 1040px;
       margin: 0 auto;
-      padding: 0 1.25rem;
+      padding: 0 1.5rem;
     }
 
     /* Navigation */
-    nav {
-      background-color: var(--surface-color);
-      border-bottom: 2px solid var(--primary-blue);
-      padding: 0.75rem 0;
+    .site-nav {
       position: sticky;
       top: 0;
       z-index: 10;
+      background: rgba(243, 240, 235, 0.96);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem 1.5rem;
+      padding: 0.9rem 1.5rem;
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
     }
 
     .nav-list {
@@ -70,133 +92,374 @@
       padding: 0;
       display: flex;
       flex-wrap: wrap;
-      gap: 1.25rem;
+      gap: 0.25rem 1.5rem;
     }
 
     .nav-list a {
+      font-size: 1rem;
       font-weight: 600;
     }
 
-    /* Header */
-    header {
-      padding: 2.5rem 0 2rem;
-      border-bottom: 1px solid var(--border-color);
+    /* Hero */
+    .hero {
+      padding: 5rem 0 4rem;
     }
 
-    h1 {
-      margin: 0 0 0.5rem;
-      font-size: 2rem;
-      line-height: 1.2;
-      color: var(--text-color);
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 2.5rem;
     }
 
-    .headline {
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 9vw, 5.25rem);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      margin: 0 0 1.25rem;
+    }
+
+    .promise {
+      font-family: var(--serif);
+      font-size: clamp(1.35rem, 2.8vw, 1.75rem);
+      line-height: 1.35;
+      max-width: 28ch;
+      margin: 0 0 1.5rem;
+    }
+
+    .meta {
       margin: 0;
-      font-size: 1.125rem;
+      padding-left: 0.85rem;
+      border-left: 4px solid var(--orange);
+      font-size: 1rem;
       font-weight: 600;
-      color: var(--primary-blue);
+      color: var(--muted);
     }
 
-    /* Main Sections */
-    main {
-      padding: 1rem 0 3rem;
+    .portrait {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid #ffffff;
+      box-shadow: 0 0 0 3px var(--blue);
     }
 
-    section {
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--border-color);
+    /* Sections */
+    .section {
+      padding: 4rem 0;
+      border-top: 1px solid var(--line);
     }
 
-    section:last-of-type {
-      border-bottom: none;
+    .section h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4.5vw, 2.6rem);
+      line-height: 1.1;
+      margin: 0 0 2rem;
     }
 
-    h2 {
+    /* Work */
+    .feature {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 2.5rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 2.25rem;
+    }
+
+    .tags {
+      list-style: none;
+      margin: 0 0 1.25rem;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tags li {
+      font-size: 1rem;
+      padding: 0.15rem 0.75rem;
+      border: 1px solid var(--blue);
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--ink);
+    }
+
+    .feature h3 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3.2vw, 2rem);
+      line-height: 1.2;
       margin: 0 0 1rem;
-      font-size: 1.5rem;
-      color: var(--primary-blue);
-      border-left: 4px solid var(--accent-orange);
-      padding-left: 0.75rem;
     }
 
-    .chart-frame {
-      background-color: var(--surface-color);
-      border: 1px solid var(--border-color);
-      border-top: 4px solid var(--primary-blue);
-      border-radius: 6px;
-      padding: 0.5rem;
+    .feature p {
+      margin: 0 0 1rem;
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-weight: 700;
+    }
+
+    .stats {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
+      padding-left: 2.5rem;
+      border-left: 1px solid var(--line);
+    }
+
+    .stat-value {
+      display: block;
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 4rem);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .stat-value.up { color: var(--blue); }
+    .stat-value.down { color: var(--orange); }
+
+    .stat-label {
+      display: block;
+      font-size: 1rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
     }
 
     .credit {
       font-size: 1rem;
-      color: var(--muted-text);
+      color: var(--muted);
+      margin: 1.25rem 0 0;
+      max-width: 75ch;
+    }
+
+    .more {
+      margin: 1.5rem 0 0;
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    /* About */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 3rem;
+    }
+
+    .bio p {
+      font-size: 1.15rem;
+      margin: 0 0 1rem;
+      max-width: 60ch;
+    }
+
+    .cv h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--blue);
+      margin: 0 0 0.5rem;
+    }
+
+    .cv-group { margin-bottom: 1.75rem; }
+
+    .timeline {
+      list-style: none;
+      margin: 0;
+      padding: 0 0 0 1rem;
+      border-left: 3px solid var(--orange);
+    }
+
+    .timeline li { margin-bottom: 0.4rem; }
+
+    .status {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border: 1px solid var(--orange);
+      border-radius: 6px;
+      margin: 0;
+    }
+
+    /* Contact */
+    .contact-line {
+      font-family: var(--serif);
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      margin: 0;
     }
 
     /* Footer */
     footer {
-      background-color: var(--surface-color);
-      border-top: 2px solid var(--primary-blue);
-      padding: 1.5rem 0;
+      border-top: 1px solid var(--line);
+      padding: 2rem 0;
       font-size: 1rem;
-      color: var(--muted-text);
+      color: var(--muted);
     }
 
-    footer p {
-      margin: 0.25rem 0;
+    footer p { margin: 0.25rem 0; }
+
+    @media (max-width: 760px) {
+      .hero { padding: 3rem 0 2.5rem; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .portrait { width: 150px; height: 150px; order: -1; }
+      .feature { grid-template-columns: 1fr; padding: 1.5rem; }
+      .stats { padding-left: 0; padding-top: 1.5rem; border-left: 0; border-top: 1px solid var(--line); }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
     }
+    /* Project page */
+    .project-hero { padding: 4rem 0 2.5rem; }
+    .project-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.25rem, 6vw, 3.75rem);
+      line-height: 1.08;
+      margin: 0 0 1.25rem;
+      max-width: 20ch;
+    }
+    .question {
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 2.6vw, 1.5rem);
+      line-height: 1.4;
+      max-width: 40ch;
+      margin: 0;
+    }
+    .chart-frame {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.75rem;
+    }
+    .chart-frame iframe { display: block; border-radius: 8px; background: #ffffff; }
+    .finding-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .finding-grid p.lead { font-size: 1.15rem; max-width: 55ch; margin: 0; }
+    .finding-grid .stats { padding-left: 2.5rem; }
+    @media (max-width: 760px) {
+      .finding-grid { grid-template-columns: 1fr; }
+      .finding-grid .stats { padding-left: 0; }
+    }
+    /* Morandi details */
+    body { background: var(--bg); }
+    .site-nav { background: rgba(243, 240, 235, 0.96); }
+    .portrait-wrap { position: relative; }
+    .portrait { border-color: var(--bg); box-shadow: 0 0 0 3px var(--sage); }
+    .sprig { position: absolute; left: -26px; bottom: -6px; width: 84px; height: 84px; }
+    .tags li { background: var(--sage-light); border-color: var(--sage); }
+    .feature { background: var(--surface); border-color: var(--line); }
+    .status { border-color: var(--sage); background: var(--sage-light); }
+    .timeline { border-left-color: var(--sage); }
+    .meta { border-left-color: var(--orange); }
+    .chart-frame { background: var(--surface); }
+    .cosy {
+      display: block;
+      width: min(360px, 100%);
+      height: auto;
+      margin: 0 auto -1px;
+    }
+    .cosy-wrap { border-top: 1px solid var(--line); padding-top: 3rem; }
+    footer { border-top: 0; text-align: center; }
   </style>
 </head>
 <body>
 
-  <nav aria-label="Primary navigation">
-    <div class="container">
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">Lily Chen</a>
       <ul class="nav-list">
         <li><a href="index.html">Home</a></li>
-        <li><a href="index.html#header">Top</a></li>
+        <li><a href="index.html#work">Work</a></li>
         <li><a href="index.html#about">About</a></li>
-        <li><a href="index.html#cv">CV</a></li>
-        <li><a href="index.html#portfolio">Data Visualisation Portfolio</a></li>
-        <li><a href="project1.html" aria-current="page">Project 1</a></li>
         <li><a href="index.html#contact">Contact</a></li>
       </ul>
     </div>
   </nav>
 
-  <header id="header">
+  <header class="project-hero" id="header">
     <div class="container">
+      <ul class="tags" aria-label="Project details">
+        <li>Data visualisation</li>
+        <li>Class project</li>
+        <li>November 2026</li>
+      </ul>
       <h1>Big Mac index: which currencies look over- or undervalued?</h1>
-      <p class="headline">Project 1</p>
+      <p class="question">In July 2026, how much more or less did a Big Mac cost in each country than in the US, once converted at market exchange rates?</p>
     </div>
   </header>
 
-  <main class="container">
+  <main>
 
-    <section id="question" aria-labelledby="question-heading">
-      <h2 id="question-heading">The question</h2>
-      <p>In July 2026, how much more or less did a Big Mac cost in each country than in the US, once converted at market exchange rates?</p>
-    </section>
-
-    <section id="chart" aria-labelledby="chart-heading">
-      <h2 id="chart-heading">The chart</h2>
-      <div class="chart-frame">
-        <iframe src="charts/chart1.html" height="500" title="Interactive Big Mac index chart: how far each country's Big Mac price is above or below the US price, with controls for date and comparison currency" style="width:100%;border:0"></iframe>
+    <section class="section" id="chart" aria-labelledby="chart-heading">
+      <div class="container">
+        <h2 id="chart-heading">The chart</h2>
+        <div class="chart-frame">
+          <iframe src="charts/chart1.html" height="500" title="Interactive Big Mac index chart: how far each country's Big Mac price is above or below the US price, with controls for date and comparison currency" style="width:100%;border:0"></iframe>
+        </div>
+        <p><a href="charts/chart1.html" target="_blank" rel="noopener noreferrer">Open the chart in a new tab</a></p>
       </div>
-      <p><a href="charts/chart1.html" target="_blank" rel="noopener noreferrer">Open the chart in a new tab</a></p>
     </section>
 
-    <section id="finding" aria-labelledby="finding-heading">
-      <h2 id="finding-heading">What I found</h2>
-      <p>In July 2026, a Big Mac cost 45% more in Switzerland than in the US, but 62% less in Indonesia. 41 of the other 53 countries and areas had a cheaper Big Mac than the US once converted to dollars.</p>
+    <section class="section" id="finding" aria-labelledby="finding-heading">
+      <div class="container">
+        <h2 id="finding-heading">What I found</h2>
+        <div class="finding-grid">
+          <p class="lead">In July 2026, a Big Mac cost 45% more in Switzerland than in the US, but 62% less in Indonesia. 41 of the other 53 countries and areas had a cheaper Big Mac than the US once converted to dollars.</p>
+          <div class="stats" aria-label="Key figures, July 2026">
+            <p>
+              <span class="stat-value up">+45%</span>
+              <span class="stat-label">Switzerland: dearest Big Mac compared with the US</span>
+            </p>
+            <p>
+              <span class="stat-value down">&minus;62%</span>
+              <span class="stat-label">Indonesia: cheapest Big Mac compared with the US</span>
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="data" aria-labelledby="data-heading">
-      <h2 id="data-heading">Data credit</h2>
-      <p class="credit">Data: The Economist, Big Mac index (MIT licence; notice in LICENCE_bigmac_TheEconomist.txt), <a href="https://github.com/TheEconomist/big-mac-data" target="_blank" rel="noopener noreferrer">github.com/TheEconomist/big-mac-data</a>.</p>
-      <p class="credit">A copy of the MSIN0167 course target chart, built as a class exercise with AI help. Target A is inspired by The Economist's Big Mac index and is not a chart by The Economist.</p>
-      <p><a href="index.html">Back to home page</a></p>
+    <section class="section" id="data" aria-labelledby="data-heading">
+      <div class="container">
+        <h2 id="data-heading">Data credit</h2>
+        <p class="credit">Data: The Economist, Big Mac index (MIT licence; notice in LICENCE_bigmac_TheEconomist.txt), <a href="https://github.com/TheEconomist/big-mac-data" target="_blank" rel="noopener noreferrer">github.com/TheEconomist/big-mac-data</a>.</p>
+        <p class="credit">A copy of the MSIN0167 course target chart, built as a class exercise with AI help. Target A is inspired by The Economist’s Big Mac index and is not a chart by The Economist.</p>
+        <p><a class="cta" href="index.html">Back to home page</a></p>
+      </div>
     </section>
 
   </main>
+
+  <div class="cosy-wrap" aria-hidden="true">
+    <svg class="cosy" viewBox="0 0 360 130" focusable="false">
+      <!-- plant -->
+      <ellipse cx="62" cy="62" rx="9" ry="24" transform="rotate(-28 62 62)" fill="#a8b5a0"/>
+      <ellipse cx="82" cy="58" rx="9" ry="26" transform="rotate(18 82 58)" fill="#c3ccbb"/>
+      <ellipse cx="72" cy="52" rx="8" ry="28" fill="#8f9d88"/>
+      <path d="M52 92 H92 L86 128 H58 Z" fill="#d6b9a3" stroke="#5a5f63" stroke-width="2" stroke-linejoin="round"/>
+      <!-- mug -->
+      <path d="M140 76 C 136 66, 146 62, 142 52" fill="none" stroke="#b7aea2" stroke-width="2" stroke-linecap="round"/>
+      <path d="M154 76 C 150 66, 160 62, 156 52" fill="none" stroke="#b7aea2" stroke-width="2" stroke-linecap="round"/>
+      <rect x="128" y="84" width="40" height="44" rx="6" fill="#b9c6cf" stroke="#5a5f63" stroke-width="2"/>
+      <path d="M168 94 C 182 94, 182 116, 168 116" fill="none" stroke="#5a5f63" stroke-width="2"/>
+      <!-- sleeping cat -->
+      <path d="M318 122 C 338 120, 340 102, 326 100" fill="none" stroke="#5a5f63" stroke-width="2" stroke-linecap="round"/>
+      <ellipse cx="268" cy="110" rx="52" ry="18" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2"/>
+      <path d="M212 96 L218 80 L226 92 M234 92 L242 80 L246 97" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="230" cy="106" r="17" fill="#d8cfc4" stroke="#5a5f63" stroke-width="2"/>
+      <path d="M220 106 Q 224 109 228 106 M234 106 Q 238 109 242 106" fill="none" stroke="#5a5f63" stroke-width="1.8" stroke-linecap="round"/>
+      <text x="252" y="80" font-family="Georgia, serif" font-size="14" fill="#8f9d88">z</text>
+      <text x="262" y="68" font-family="Georgia, serif" font-size="11" fill="#8f9d88">z</text>
+      <!-- table line -->
+      <line x1="20" y1="128.5" x2="340" y2="128.5" stroke="#5a5f63" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </div>
 
   <footer>
     <div class="container">
